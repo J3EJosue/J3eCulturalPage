@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria de Cartas Super Mejorado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Juego de Memoria de Cartas</h1>
+        <div id="game-info">
+            <div id="score">Intentos: <span id="attempts">0</span></div>
+            <div id="time">Tiempo: <span id="timer">00:00</span></div>
+            <div id="level">Nivel: <span id="current-level">1</span></div>
+        </div>
+        <div id="game-board"></div>
+        <div id="controls">
+            <button id="restart-btn" class="btn">Reiniciar Juego</button>
+            <button id="next-level-btn" class="btn" style="display: none;">Siguiente Nivel</button>
+        </div>
+    </div>
+
+    <div id="winner-modal">
+        <div class="modal-content">
+            <h2>¡Felicidades!</h2>
+            <p id="winner-message"></p>
+            <div id="player-score"></div>
+            <div id="player-rank"></div>
+            <input type="text" id="player-name-input" placeholder="Ingresa tu nombre">
+            <button id="save-score-btn">Guardar Puntuación</button>
+            <div id="podium">
+                <div class="podium-step" id="second-place">
+                    <div class="podium-number">2</div>
+                    <div id="second-place-name"></div>
+                    <div id="second-place-score"></div>
+                </div>
+                <div class="podium-step" id="first-place">
+                    <div class="podium-number">1</div>
+                    <div id="first-place-name"></div>
+                    <div id="first-place-score"></div>
+                </div>
+                <div class="podium-step" id="third-place">
+                    <div class="podium-number">3</div>
+                    <div id="third-place-name"></div>
+                    <div id="third-place-score"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>
