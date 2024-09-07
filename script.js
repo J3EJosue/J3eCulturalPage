@@ -11,6 +11,18 @@ const imageUrls = [
     // ... añade más URLs según sea necesario
 ];
 
+// Objeto con datos curiosos para cada pareja de cartas
+const funFacts = {
+    '/img/1.jpg': "¡El nombre Tecún Umán significa “Señor del Lugar de las Cañas” en quiché.!",
+    '/img/2.jpg': "¡Dato curioso sobre la imagen 2!",
+    '/img/3.jpg': "¡Dato curioso sobre la imagen 3!",
+    '/img/4.jpg': "¡Dato curioso sobre la imagen 4!",
+    '/img/5.jpg': "¡Dato curioso sobre la imagen 5!",
+    '/img/6.jpg': "¡Dato curioso sobre la imagen 6!",
+    '/img/7.jpg': "¡Dato curioso sobre la imagen 7!",
+    '/img/8.jpg': "¡Dato curioso sobre la imagen 8!",
+};
+
 let cards = [];
 let flippedCards = [];
 let matchedPairs = 0;
@@ -31,15 +43,24 @@ function createCard(imageUrl, index) {
     const card = document.createElement('div');
     card.className = 'card';
     card.dataset.index = index;
-    card.innerHTML = `
-<div class="card-front">
-    <img src="https://cdn-icons-png.flaticon.com/512/12359/12359565.png" alt="Card image" class="w-full h-auto border-4 border-white rounded-lg">
-</div>
-
-        <div class="card-back">
-            <img src="${imageUrl}" alt="Card image">
-        </div>
-    `;
+    
+    const cardFront = document.createElement('div');
+    cardFront.className = 'card-front';
+    const frontImg = document.createElement('img');
+    frontImg.src = "https://cdn-icons-png.flaticon.com/512/12359/12359565.png";
+    frontImg.alt = "Card front";
+    cardFront.appendChild(frontImg);
+    
+    const cardBack = document.createElement('div');
+    cardBack.className = 'card-back';
+    const backImg = document.createElement('img');
+    backImg.src = imageUrl;
+    backImg.alt = "Card back";
+    cardBack.appendChild(backImg);
+    
+    card.appendChild(cardFront);
+    card.appendChild(cardBack);
+    
     card.addEventListener('click', flipCard);
     return card;
 }
@@ -57,6 +78,24 @@ function flipCard() {
     }
 }
 
+function showFunFact(fact) {
+    const factBox = document.createElement('div');
+    factBox.className = 'fun-fact-box';
+    factBox.textContent = fact;
+    document.body.appendChild(factBox);
+    
+    setTimeout(() => {
+        factBox.classList.add('show');
+    }, 50);
+
+    setTimeout(() => {
+        factBox.classList.remove('show');
+        setTimeout(() => {
+            factBox.remove();
+        }, 500);
+    }, 3000);
+}
+
 function checkMatch() {
     const [card1, card2] = flippedCards;
     const image1 = card1.querySelector('.card-back img').src;
@@ -64,6 +103,8 @@ function checkMatch() {
 
     if (image1 === image2) {
         matchedPairs++;
+        const funFact = funFacts[new URL(image1).pathname] || "¡Interesante coincidencia!";
+        showFunFact(funFact);
         if (matchedPairs === cards.length / 2) {
             clearInterval(timer);
             setTimeout(showWinnerModal, 500);
@@ -84,7 +125,8 @@ function initGame() {
     shuffleArray(cards);
     const gameBoard = document.getElementById('game-board');
     gameBoard.innerHTML = '';
-    gameBoard.style.gridTemplateColumns = `repeat(${Math.ceil(Math.sqrt(cards.length))}, 1fr)`;
+    const columns = Math.min(6, Math.ceil(Math.sqrt(cards.length)));
+    gameBoard.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
     for (let i = 0; i < cards.length; i++) {
         gameBoard.appendChild(createCard(cards[i], i));
     }
@@ -217,5 +259,12 @@ document.getElementById('next-level-btn').addEventListener('click', () => {
     document.getElementById('winner-modal').style.display = 'none';
 });
 document.getElementById('save-score-btn').addEventListener('click', saveScore);
+
+// Añadir event listener para manejar cambios en el tamaño de la ventana
+window.addEventListener('resize', () => {
+    const gameBoard = document.getElementById('game-board');
+    const columns = Math.min(6, Math.ceil(Math.sqrt(cards.length)));
+    gameBoard.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+});
 
 initGame();
