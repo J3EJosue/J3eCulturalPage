@@ -3,34 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Juego de Memoria de Cartas - Mejora tus habilidades de memoria">
     <title>Juego de Memoria de Cartas Super Mejorado</title>
-    <!-- Estilos CSS modulares -->
-     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="game-container">
+    <main id="game-container">
         <h1>Juego de Memoria de Cartas</h1>
-        <div id="game-info">
+        <section id="game-info" aria-live="polite">
             <div id="score">Intentos: <span id="attempts">0</span></div>
             <div id="time">Tiempo: <span id="timer">00:00</span></div>
             <div id="level">Nivel: <span id="current-level">1</span></div>
-        </div>
-        <div id="game-board"></div>
-        <div id="controls">
+        </section>
+        <section id="game-board" aria-label="Tablero de juego"></section>
+        <section id="controls">
             <button id="restart-btn" class="btn">Reiniciar Juego</button>
             <button id="next-level-btn" class="btn" style="display: none;">Siguiente Nivel</button>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <div id="winner-modal">
+    <dialog id="winner-modal">
         <div class="modal-content">
             <h2>¡Felicidades!</h2>
             <p id="winner-message"></p>
             <div id="player-score"></div>
             <div id="player-rank"></div>
-            <input type="text" id="player-name-input" placeholder="Ingresa tu nombre">
-            <button id="save-score-btn">Guardar Puntuación</button>
-            <div id="podium">
+            <form id="score-form">
+                <label for="player-name-input">Nombre del jugador:</label>
+                <input type="text" id="player-name-input" placeholder="Ingresa tu nombre" required>
+                <button type="submit" id="save-score-btn">Guardar Puntuación</button>
+            </form>
+            <section id="podium" aria-label="Podio de ganadores">
                 <div class="podium-step" id="second-place">
                     <div class="podium-number">2</div>
                     <div id="second-place-name"></div>
@@ -46,11 +52,10 @@
                     <div id="third-place-name"></div>
                     <div id="third-place-score"></div>
                 </div>
-            </div>
+            </section>
         </div>
-    </div>
+    </dialog>
 
-    <!-- Script principal con tipo módulo -->
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

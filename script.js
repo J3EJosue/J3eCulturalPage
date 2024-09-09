@@ -11,17 +11,18 @@ const imageUrls = [
     // ... añade más URLs según sea necesario
 ];
 
-// Objeto con datos curiosos para cada pareja de cartas
 const funFacts = {
-    '/img/1.jpg': "¡El nombre Tecún Umán significa “Señor del Lugar de las Cañas” en quiché.!",
-    '/img/2.jpg': "¡Dato curioso sobre la imagen 2!",
-    '/img/3.jpg': "¡Dato curioso sobre la imagen 3!",
-    '/img/4.jpg': "¡Dato curioso sobre la imagen 4!",
-    '/img/5.jpg': "¡Dato curioso sobre la imagen 5!",
-    '/img/6.jpg': "¡Dato curioso sobre la imagen 6!",
-    '/img/7.jpg': "¡Dato curioso sobre la imagen 7!",
-    '/img/8.jpg': "¡Dato curioso sobre la imagen 8!",
+    '/img/1.jpg': "¿Sabías que Tecún Umán fue el último líder maya-quiché en resistir la conquista española? ¡Dicen que luchó hasta el final contra Pedro de Alvarado, y su espíritu sigue inspirando a Guatemala hasta hoy!",
+    '/img/2.jpg': "¡El Gran Jaguar de Tikal es uno de los templos más impresionantes del mundo maya! Con 44 metros de altura, parece que vigila la selva como un verdadero guardián. ¿Te imaginas lo que sería vivir en esa época?",
+    '/img/3.jpg': "El Arco de Santa Catalina no solo es un ícono de Antigua Guatemala, ¡también tiene un toque misterioso! Este arco servía para que las monjas cruzaran sin ser vistas. ¡Imagina lo que debe haber pasado bajo ese arco hace siglos!",
+    '/img/4.jpg': "El Palacio Nacional de la Cultura es una joya arquitectónica. ¡Cuidado, en sus pasillos podrían esconderse secretos históricos!",
+    '/img/5.jpg': "¡Nada como un buen tamal guatemalteco para celebrar! Esta delicia tiene más de 500 años de historia, y si lo comes en Nochebuena, se dice que trae buena suerte para el próximo año. ¡No lo dejes pasar!",
+    '/img/6.jpg': "¿Postre o comida? Los rellenitos de plátano con frijol son lo mejor de ambos mundos. Aunque suene raro, ¡una vez que los pruebas no puedes parar de comerlos!",
+    '/img/7.jpg': "El pepián es un platillo con tanta historia como sabor. ¡Cada cucharada es una mezcla de culturas! Se dice que hay tantas recetas de pepián como familias en Guatemala, cada una con su toque secreto.",
+    '/img/8.jpg': "El quetzal, ave nacional de Guatemala, es un símbolo de libertad. ¡Su plumaje verde y rojo es tan increíble que parece salido de un cuento! En tiempos antiguos, se creía que si lo capturabas, perdía su brillo.",
+    '/img/9.jpg': "La Monja Blanca es la flor más elegante de Guatemala. Tan rara y delicada que fue declarada flor nacional en 1934. ¡Y ojo, es una orquídea que solo crece en tierras guatemaltecas!"
 };
+
 
 let cards = [];
 let flippedCards = [];
@@ -30,6 +31,7 @@ let attempts = 0;
 let timer;
 let seconds = 0;
 let currentLevel = 1;
+const maxLevel = 2;
 let highScores = JSON.parse(localStorage.getItem('memoryGameHighScores')) || [];
 
 function shuffleArray(array) {
@@ -118,8 +120,9 @@ function checkMatch() {
     flippedCards = [];
 }
 
-function initGame() {
-    const numberOfPairs = 4 + currentLevel * 2;
+function initGame(level) {
+    currentLevel = level;
+    const numberOfPairs = level === 1 ? 6 : 8; // 6 pares para nivel 1, 8 para nivel 2
     const gameImages = imageUrls.slice(0, numberOfPairs);
     cards = [...gameImages, ...gameImages];
     shuffleArray(cards);
@@ -131,6 +134,7 @@ function initGame() {
         gameBoard.appendChild(createCard(cards[i], i));
     }
     resetGame();
+    updateLevelSelector();
 }
 
 function resetGame() {
@@ -155,24 +159,18 @@ function formatTime(totalSeconds) {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-function restartGame() {
-    currentLevel = 1;
-    const gameBoard = document.getElementById('game-board');
-    gameBoard.classList.add('shuffling');
-    setTimeout(() => {
-        initGame();
-        gameBoard.classList.remove('shuffling');
-    }, 500);
-}
-
-function nextLevel() {
-    currentLevel++;
-    const gameBoard = document.getElementById('game-board');
-    gameBoard.classList.add('shuffling');
-    setTimeout(() => {
-        initGame();
-        gameBoard.classList.remove('shuffling');
-    }, 500);
+function updateLevelSelector() {
+    const levelSelector = document.getElementById('level-selector');
+    levelSelector.innerHTML = '';
+    for (let i = 1; i <= maxLevel; i++) {
+        const button = document.createElement('button');
+        button.textContent = `Nivel ${i}`;
+        button.addEventListener('click', () => initGame(i));
+        if (i === currentLevel) {
+            button.classList.add('active');
+        }
+        levelSelector.appendChild(button);
+    }
 }
 
 function showWinnerModal() {
@@ -192,7 +190,7 @@ function showWinnerModal() {
     updatePodium();
     createFireworks();
 
-    if (currentLevel < 5) {
+    if (currentLevel < maxLevel) {
         document.getElementById('next-level-btn').style.display = 'block';
     } else {
         document.getElementById('next-level-btn').style.display = 'none';
@@ -253,9 +251,12 @@ function getPlayerRank(score) {
     return rank;
 }
 
-document.getElementById('restart-btn').addEventListener('click', restartGame);
+document.getElementById('restart-btn').addEventListener('click', () => initGame(currentLevel));
 document.getElementById('next-level-btn').addEventListener('click', () => {
-    nextLevel();
+    if (currentLevel < maxLevel) {
+        currentLevel++;
+        initGame(currentLevel);
+    }
     document.getElementById('winner-modal').style.display = 'none';
 });
 document.getElementById('save-score-btn').addEventListener('click', saveScore);
@@ -267,4 +268,5 @@ window.addEventListener('resize', () => {
     gameBoard.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
 });
 
-initGame();
+// Inicializa el juego con el nivel 1
+initGame(1);

@@ -45,7 +45,6 @@ h1, h2 {
     transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     position: relative;
-    width: 90%;
 }
 
 .card:hover {
@@ -131,15 +130,6 @@ h1, h2 {
 
 #restart-btn:hover {
     background-color: #c0392b;
-}
-
-#next-level-btn {
-    background-color: #2ecc71;
-    color: white;
-}
-
-#next-level-btn:hover {
-    background-color: #27ae60;
 }
 
 @keyframes shuffle {
@@ -258,32 +248,13 @@ h1, h2 {
     100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
 }
 
-@media (max-width: 600px) {
-    #game-container {
-        padding: 10px;
-    }
-    
-    h1, h2 {
-        font-size: 1.2em;
-    }
-    
-    #game-board {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
-    }
-    
-    .btn {
-        padding: 6px 12px;
-        font-size: 0.9em;
-    }
-}
 .fun-fact-box {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    color: rgb(0, 0, 0);
+    background-color: rgba(52, 152, 219, 0.9);
+    color: white;
     padding: 15px 20px;
     border-radius: 10px;
     font-size: 18px;
@@ -298,3 +269,69 @@ h1, h2 {
     opacity: 1;
 }
 
+/* Estilos adicionales para mejorar la responsividad */
+@media (min-width: 768px) {
+    #game-container {
+        max-width: 80vw;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #game-board {
+        flex-grow: 1;
+        overflow: auto;
+        max-height: calc(90vh - 200px);
+    }
+
+    .card {
+        max-width: 100px;
+        max-height: 133px;
+    }
+}
+
+/* Estilos para el selector de nivel */
+#level-selector {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#level-selector button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#level-selector button:hover {
+    background-color: #2980b9;
+}
+
+#level-selector button.active {
+    background-color: #2ecc71;
+}
+
+@media (max-width: 600px) {
+    #game-container {
+        padding: 10px;
+    }
+    
+    h1, h2 {
+        font-size: 1.2em;
+    }
+    
+    #game-board {
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        gap: 5px;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+}
