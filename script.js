@@ -95,7 +95,7 @@ function showFunFact(fact) {
         setTimeout(() => {
             factBox.remove();
         }, 500);
-    }, 5000);
+    }, 2000);
 }
 
 function checkMatch() {
